@@ -32,7 +32,7 @@ public class Braitenberg {
 				sensors[0] = rand.nextFloat();
 				sensors[1] = rand.nextFloat(); 
 				// compute speed of the motor - here select the different behaviors 
-				motorSpeeds = fear(sensors, 300);
+				motorSpeeds = love(sensors, 300);
 				
 				// Print out the values - simulation for home when we don't have the robot
 				System.out.println("Light Intensity: Right " + sensors[0] + " Left " + sensors[1]);
@@ -89,6 +89,12 @@ public class Braitenberg {
 	 */
 	public static float[] love(float[] sensors, float max_speed){
 		float[] motorSpeeds = {0,1, 0,1};
+		
+		// as the sensor reading approaches 1 
+		motorSpeeds[0] = (1 - sensors[0]) * max_speed;
+		motorSpeeds[1] = (1 - sensors[1]) * max_speed;
+		
+		
 		return motorSpeeds;
 	}
 	
