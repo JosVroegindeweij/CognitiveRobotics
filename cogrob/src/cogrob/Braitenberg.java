@@ -17,31 +17,34 @@ public class Braitenberg {
 		// The behavior of Braitenberg robot is reactive
 		// For any timestep: sense the environment, compute the speed of motors as a function of the sense alone and set it
 
+		
+		// Keep track of time
 		long startTimer = System.currentTimeMillis();
 		long lastMeasure = System.currentTimeMillis();
+		// how many ms to wait for the next measurement
 		int measurementFreqency = 100;
 		
 		
 		do {
-			
 			// measure with the sensors every |measurementFreqency| ms
 			if(System.currentTimeMillis() - lastMeasure > measurementFreqency){
 				// sense
 				sensors[0] = rand.nextFloat();
 				sensors[1] = rand.nextFloat(); 
 				// compute speed of the motor - here select the different behaviors 
-				motorSpeeds = fear(sensors);
+				motorSpeeds = fear(sensors, 300);
+				
+				// Print out the values - simulation for home when we don't have the robot
 				System.out.println("Light Intensity: Right " + sensors[0] + " Left " + sensors[1]);
-				System.out.println("Motor speed: Right " + motorSpeeds[0] + " Left " + motorSpeeds[1]);
+				System.out.println("Motor speed: Right " + motorSpeeds[0] + " Left " + motorSpeeds[1] + "\n");
+				
 				// set the motor speed
-				
-				
 				lastMeasure = System.currentTimeMillis() ;
 			}
 			// Drive forward
 			
 			
-		} while(lastMeasure - startTimer < 2000); // Do this for 30 sec
+		} while(lastMeasure - startTimer < 2000); // Do this for 2 sec
 		
 		
 		
@@ -49,25 +52,54 @@ public class Braitenberg {
 		
 	}
 	
-	public static float[] fear(float[] sensors){
+	
+	//TODO write function
+	/**
+	 * @param sensors - readings for the right and left sensor as array
+	 * @param max_speed - maximal speed of the motors
+	 * @return the speed of each of the motors as float array. Linear to sensor readings
+	 * Implements the fear response - moving away from light 
+	 */
+	public static float[] fear(float[] sensors, float max_speed){
 		float[] motorSpeeds = new float[2];
 		// unilateral connection for fear
-		motorSpeeds[0] = sensors[0] * 300;
-		motorSpeeds[1] = sensors[1] * 300;
+		motorSpeeds[0] = sensors[0] * max_speed;
+		motorSpeeds[1] = sensors[1] * max_speed;
 		return motorSpeeds;
 	}
 	
-	public static float[] aggression(float[] sensors){
+	//TODO write function
+	/**
+	 * @param sensors
+	 * @param max_speed
+	 * @return
+	 * Agression response - moving towards light
+	 */
+	public static float[] aggression(float[] sensors, float max_speed){
 		float[] motorSpeeds = {0,1, 0,1};
 		return motorSpeeds;
 	}
 	
-	public static float[] love(float[] sensors){
+	//TODO write function
+	/**
+	 * @param sensors
+	 * @param max_speed
+	 * @return
+	 * Love - seek the light and stop near it
+	 */
+	public static float[] love(float[] sensors, float max_speed){
 		float[] motorSpeeds = {0,1, 0,1};
 		return motorSpeeds;
 	}
 	
-	public static float[] exploration(float[] sensors){
+	//TODO write function
+	/**
+	 * @param sensors
+	 * @param max_speed
+	 * @return
+	 * Exploration - move away from the light and stop close to it
+	 */
+	public static float[] exploration(float[] sensors, float max_speed){
 		float[] motorSpeeds = {0,1, 0,1};
 		return motorSpeeds;
 	}
