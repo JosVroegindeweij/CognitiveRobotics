@@ -5,7 +5,9 @@ import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.Port;
+import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.NXTLightSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
@@ -42,9 +44,8 @@ public class Jos {
 
 	private static void braitenbergFirst(int behavior) {
 		// Initializing first color sensor
-		Port colorSensorPort1 = LocalEV3.get().getPort("S1");
-		SensorModes colorSensor1 = new EV3ColorSensor(colorSensorPort1);
-		SampleProvider colorValue1 = colorSensor1.getMode("Red");
+		NXTLightSensor sensor1 = new NXTLightSensor(SensorPort.S1);
+		SampleProvider colorValue1 = sensor1.getRedMode();
 		float[] colorSample1 = new float[colorValue1.sampleSize()];
 		colorValue1.fetchSample(colorSample1, 0);
 		// Values are saved in colorSample1
@@ -65,7 +66,7 @@ public class Jos {
 			// Extra speed of right side, based on the lightvalue of the left
 			// side
 			int[] speeds = new int[2];
-			float[] lightValues = {colorSample1[0],colorSample2[0]};
+			float[] lightValues = {colorSample1[0],(colorSample2[0]/100)};
 			switch (behavior) {
 			case 0:
 				speeds = fear(lightValues); // Initiate fear
@@ -102,10 +103,10 @@ public class Jos {
 			default:
 			}
 			Motor.A.setSpeed(speeds[0]); // Motor A is on the left side
-			Motor.B.setSpeed(speeds[1]); // Motor B is on the right side
+			Motor.D.setSpeed(speeds[1]); // Motor D is on the right side
 
 			Motor.A.forward();
-			Motor.B.forward();
+			Motor.D.forward();
 		}
 
 	}
