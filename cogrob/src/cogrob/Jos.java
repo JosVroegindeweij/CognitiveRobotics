@@ -120,15 +120,15 @@ public class Jos {
 	}
 
 	public static int[] aggression(float[] lightValues){
-		int speedLeft = (int) lightValues[1] * 100 + 100;
-		int speedRight = (int) lightValues[0] * 100 + 100;
+		int speedLeft = (int) (lightValues[1] * 100 + 100);
+		int speedRight = (int) (lightValues[0] * 100 + 100);
 		int [] speeds = {speedLeft, speedRight};
 		return speeds;
 	}
 	
 	public static int[] love(float[] lightValues){
-		int speedLeft = (int) lightValues[1] * 100 + 100;
-		int speedRight = (int) lightValues[0] * 100 + 100;
+		int speedLeft = (int) (lightValues[1] * 100 + 100);
+		int speedRight = (int) (lightValues[0] * 100 + 100);
 		if (lightValues[1]>0.8 || lightValues[0]>0.8){
 			speedLeft = 0; speedRight = 0;
 		}
@@ -137,8 +137,8 @@ public class Jos {
 	}
 	
 	public static int[] exploration(float[] lightValues){
-		int speedLeft = (int) lightValues[0] * 100 + 100;
-		int speedRight = (int) lightValues[1] * 100 + 100;
+		int speedLeft = (int) (lightValues[0] * 100 + 100);
+		int speedRight = (int) (lightValues[1] * 100 + 100);
 		if (lightValues[1]>0.8 || lightValues[0]>0.8){
 			speedLeft = 0; speedRight = 0;
 		}
