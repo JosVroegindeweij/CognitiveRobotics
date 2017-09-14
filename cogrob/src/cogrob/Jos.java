@@ -18,8 +18,18 @@ public class Jos {
 		int program = startRobot();
 		System.out.println("Robot is starting...");
 
-		if (program == Button.ID_LEFT) // This is used to select different algorithms you want to run
-			braitenbergFirst();
+		System.out.println("Left for Fear");
+		System.out.println("Right for Aggression");
+		System.out.println("Down for Love");
+		System.out.println("Up for Exploration");
+		if (program == Button.ID_LEFT) // Fear
+			braitenbergFirst(0);
+		else if (program == Button.ID_RIGHT)// Aggression
+			braitenbergFirst(1);
+		else if (program == Button.ID_DOWN)// Love
+			braitenbergFirst(2);
+		else if (program == Button.ID_UP)// Exploration
+			braitenbergFirst(3);
 	}
 
 	public static int startRobot() {
@@ -30,7 +40,7 @@ public class Jos {
 		return buttonNr;
 	}
 
-	private static void braitenbergFirst() {
+	private static void braitenbergFirst(int behavior) {
 		// Initializing first color sensor
 		Port colorSensorPort1 = LocalEV3.get().getPort("S1");
 		SensorModes colorSensor1 = new EV3ColorSensor(colorSensorPort1);
@@ -46,19 +56,92 @@ public class Jos {
 		float[] colorSample2 = new float[colorValue2.sampleSize()];
 		colorValue2.fetchSample(colorSample2, 0);
 		// Values are saved in colorSample2
-		
-		while (true) {		// We want to loop infinitely
-			double extraSpeed1 = 100 * colorSample2[0]; 
-//			Extra speed of left side, based on the lightvalue of the right side
-			double extraSpeed2 = 100 * colorSample1[0]; 
-//			Extra speed of right side, based on the lightvalue of the left side
 
-			Motor.A.setSpeed((int) (100 + extraSpeed1));	// Motor A is on the left side
-			Motor.B.setSpeed((int) (100 + extraSpeed2));	// Motor B is on the right side
+		while (true) { // We want to loop infinitely
+			// double extraSpeed1 = 100 * colorSample2[0];
+			//// Extra speed of left side, based on the lightvalue of the right
+			// side
+			// double extraSpeed2 = 100 * colorSample1[0];
+			// Extra speed of right side, based on the lightvalue of the left
+			// side
+			int[] speeds = new int[2];
+			float[] lightValues = {colorSample1[0],colorSample2[0]};
+			switch (behavior) {
+			case 0:
+				speeds = fear(lightValues); // Initiate fear
+															// behavior, the
+															// function returns
+															// the motor speeds
+				break;
+			case 1:
+				speeds = aggression(lightValues); // Initiate
+																	// aggression
+																	// behavior,
+																	// the
+																	// function
+																	// returns
+																	// the motor
+																	// speeds
+				break;
+			case 2:
+				speeds = love(lightValues); // Initiate love
+															// behavior, the
+															// function returns
+															// the motor speeds
+				break;
+			case 3:
+				speeds = exploration(lightValues); // Initiate
+																	// exploration
+																	// behavior,
+																	// the
+																	// function
+																	// returns
+																	// the motor
+																	// speeds
+				break;
+			default:
+			}
+			Motor.A.setSpeed(speeds[0]); // Motor A is on the left side
+			Motor.B.setSpeed(speeds[1]); // Motor B is on the right side
 
 			Motor.A.forward();
 			Motor.B.forward();
 		}
 
+	}
+
+	public static int[] fear(float[] lightValues) {
+		int speedLeft = (int) lightValues[0] * 100 + 100;
+		int speedRight = (int) lightValues[1] * 100 + 100;
+		int[] speeds = { speedLeft, speedRight };
+		return speeds;
+
+	}
+
+	public static int[] aggression(float[] lightValues){
+		int speedLeft = (int) lightValues[1] * 100 + 100;
+		int speedRight = (int) lightValues[0] * 100 + 100;
+		int [] speeds = {speedLeft, speedRight};
+		return speeds;
+	}
+	
+	public static int[] love(float[] lightValues){
+		int speedLeft = (int) lightValues[1] * 100 + 100;
+		int speedRight = (int) lightValues[0] * 100 + 100;
+		if (lightValues[1]>0.8 || lightValues[0]>0.8){
+			speedLeft = 0; speedRight = 0;
+		}
+		int [] speeds = {speedLeft, speedRight};
+		return speeds;
+	}
+	
+	public static int[] exploration(float[] lightValues){
+		int speedLeft = (int) lightValues[0] * 100 + 100;
+		int speedRight = (int) lightValues[1] * 100 + 100;
+		if (lightValues[1]>0.8 || lightValues[0]>0.8){
+			speedLeft = 0; speedRight = 0;
+		}
+		int [] speeds = {speedLeft, speedRight};
+		return speeds;
 	}
 }
