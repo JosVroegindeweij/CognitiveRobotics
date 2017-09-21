@@ -18,10 +18,11 @@ public class Lella
   private static SensorMode light = colorSensor2.getAmbientMode();
   public static void main(String[] args)
   {
+    final boolean off=false;
     final EV3 ev3 = (EV3) BrickFinder.getLocal();
     Keys keys = ev3.getKeys();
-    
     while (!(keys.getButtons() == Keys.ID_ESCAPE)){
+      colorSensor.setFloodlight(off);
       color.fetchSample(colorSample,0);
       light.fetchSample(colorSample,1);
       System.out.println(colorSample[0]*100+"  "+ colorSample[1]*100);
