@@ -67,6 +67,9 @@ public class Jos {
 			// side
 			int[] speeds = new int[2];
 			float[] lightValues = {colorSample1[0],(colorSample2[0]/100)};
+			
+			System.out.println("Light values " + lightValues[0] + "\t" + lightValues[1]);
+			
 			switch (behavior) {
 			case 0:
 				speeds = fear(lightValues); // Initiate fear
@@ -112,8 +115,8 @@ public class Jos {
 	}
 
 	public static int[] fear(float[] lightValues) {
-		int speedLeft = (int) lightValues[0] * 100 + 100;
-		int speedRight = (int) lightValues[1] * 100 + 100;
+		int speedLeft = (int) lightValues[0] * 500;
+		int speedRight = (int) lightValues[1] * 500;
 		int[] speeds = { speedLeft, speedRight };
 		return speeds;
 
