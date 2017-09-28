@@ -8,8 +8,10 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.NXTLightSensor;
 import lejos.hardware.sensor.SensorMode;
+
 public class Lella
 {
+  //Lella
 
   private static EV3ColorSensor colorSensor=new EV3ColorSensor(SensorPort.S2);
   private static SensorMode color=colorSensor.getAmbientMode();
@@ -24,8 +26,8 @@ public class Lella
       color.fetchSample(colorSample,0);
       light.fetchSample(colorSample,1);
       System.out.println(colorSample[0]*100+"  "+ colorSample[1]*100);
-      Motor.A.setSpeed(colorSample[0]*400);
-      Motor.D.setSpeed(colorSample[1]*400-80);
+      Motor.D.setSpeed(colorSample[0]*400);
+      Motor.A.setSpeed(colorSample[1]*400-80);
       Motor.A.forward();
       Motor.D.forward();
     }
