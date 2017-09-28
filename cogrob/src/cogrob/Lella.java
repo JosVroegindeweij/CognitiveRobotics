@@ -11,7 +11,7 @@ import lejos.hardware.sensor.SensorMode;
 
 public class Lella
 {
-  //Lella
+  //Lellaj
 
   private static EV3ColorSensor colorSensor=new EV3ColorSensor(SensorPort.S2);
   private static SensorMode color=colorSensor.getAmbientMode();
